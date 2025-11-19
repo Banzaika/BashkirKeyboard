@@ -1,0 +1,807 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6470E8F42ECE4E56002BCD99 /* BashkirKeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6470E8ED2ECE4E56002BCD99 /* BashkirKeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6470E91F2ECE50BF002BCD99 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E91B2ECE50BF002BCD99 /* WelcomeView.swift */; };
+		6470E9202ECE50BF002BCD99 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9162ECE50BF002BCD99 /* SettingsStore.swift */; };
+		6470E9212ECE50BF002BCD99 /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9182ECE50BF002BCD99 /* InstructionsView.swift */; };
+		6470E9222ECE50BF002BCD99 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9192ECE50BF002BCD99 /* RootView.swift */; };
+		6470E9232ECE50BF002BCD99 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E91D2ECE50BF002BCD99 /* AppMain.swift */; };
+		6470E9242ECE50BF002BCD99 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E91A2ECE50BF002BCD99 /* SettingsView.swift */; };
+		6470E92B2ECE50DD002BCD99 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9262ECE50DD002BCD99 /* ThemeManager.swift */; };
+		6470E92C2ECE50DD002BCD99 /* KeyboardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9252ECE50DD002BCD99 /* KeyboardTheme.swift */; };
+		6470E92D2ECE50DD002BCD99 /* ThemeTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9272ECE50DD002BCD99 /* ThemeTokens.swift */; };
+		6470E92E2ECE50DD002BCD99 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9292ECE50DD002BCD99 /* SharedSettings.swift */; };
+		6470E92F2ECE50DD002BCD99 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9262ECE50DD002BCD99 /* ThemeManager.swift */; };
+		6470E9302ECE50DD002BCD99 /* KeyboardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9252ECE50DD002BCD99 /* KeyboardTheme.swift */; };
+		6470E9312ECE50DD002BCD99 /* ThemeTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9272ECE50DD002BCD99 /* ThemeTokens.swift */; };
+		6470E9322ECE50DD002BCD99 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9292ECE50DD002BCD99 /* SharedSettings.swift */; };
+		6470E9352ECE5105002BCD99 /* AlternativeCharactersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6470E9332ECE5105002BCD99 /* AlternativeCharactersTests.swift */; };
+		6470E9502ECE542D002BCD99 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6470E94F2ECE541E002BCD99 /* README.md */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6470E8F22ECE4E56002BCD99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64FA45682ECE49B80032A81E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6470E8EC2ECE4E56002BCD99;
+			remoteInfo = BashkirKeyboardExtension;
+		};
+		64FA457E2ECE49BA0032A81E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64FA45682ECE49B80032A81E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64FA456F2ECE49B80032A81E;
+			remoteInfo = bashboard;
+		};
+		64FA45882ECE49BA0032A81E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64FA45682ECE49B80032A81E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64FA456F2ECE49B80032A81E;
+			remoteInfo = bashboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6470E8F92ECE4E56002BCD99 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6470E8F42ECE4E56002BCD99 /* BashkirKeyboardExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6470E8ED2ECE4E56002BCD99 /* BashkirKeyboardExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BashkirKeyboardExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		6470E9162ECE50BF002BCD99 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		6470E9182ECE50BF002BCD99 /* InstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsView.swift; sourceTree = "<group>"; };
+		6470E9192ECE50BF002BCD99 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		6470E91A2ECE50BF002BCD99 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		6470E91B2ECE50BF002BCD99 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		6470E91D2ECE50BF002BCD99 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
+		6470E9252ECE50DD002BCD99 /* KeyboardTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTheme.swift; sourceTree = "<group>"; };
+		6470E9262ECE50DD002BCD99 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		6470E9272ECE50DD002BCD99 /* ThemeTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeTokens.swift; sourceTree = "<group>"; };
+		6470E9292ECE50DD002BCD99 /* SharedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSettings.swift; sourceTree = "<group>"; };
+		6470E9332ECE5105002BCD99 /* AlternativeCharactersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeCharactersTests.swift; sourceTree = "<group>"; };
+		6470E94F2ECE541E002BCD99 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		64FA45702ECE49B80032A81E /* bashboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bashboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64FA457D2ECE49BA0032A81E /* bashboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bashboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64FA45872ECE49BA0032A81E /* bashboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bashboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6470E8F52ECE4E56002BCD99 /* Exceptions for "BashkirKeyboardExtension" folder in "BashkirKeyboardExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6470E8EC2ECE4E56002BCD99 /* BashkirKeyboardExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		6470E8EE2ECE4E56002BCD99 /* BashkirKeyboardExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6470E8F52ECE4E56002BCD99 /* Exceptions for "BashkirKeyboardExtension" folder in "BashkirKeyboardExtension" target */,
+			);
+			path = BashkirKeyboardExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6470E8EA2ECE4E56002BCD99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA456D2ECE49B80032A81E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA457A2ECE49BA0032A81E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA45842ECE49BA0032A81E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6470E9092ECE50AA002BCD99 /* KeyboardExtension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = KeyboardExtension;
+			sourceTree = "<group>";
+		};
+		6470E9172ECE50BF002BCD99 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9162ECE50BF002BCD99 /* SettingsStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6470E91C2ECE50BF002BCD99 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9182ECE50BF002BCD99 /* InstructionsView.swift */,
+				6470E9192ECE50BF002BCD99 /* RootView.swift */,
+				6470E91A2ECE50BF002BCD99 /* SettingsView.swift */,
+				6470E91B2ECE50BF002BCD99 /* WelcomeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6470E91E2ECE50BF002BCD99 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9172ECE50BF002BCD99 /* Services */,
+				6470E91C2ECE50BF002BCD99 /* Views */,
+				6470E91D2ECE50BF002BCD99 /* AppMain.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6470E9282ECE50DD002BCD99 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9252ECE50DD002BCD99 /* KeyboardTheme.swift */,
+				6470E9262ECE50DD002BCD99 /* ThemeManager.swift */,
+				6470E9272ECE50DD002BCD99 /* ThemeTokens.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		6470E92A2ECE50DD002BCD99 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9282ECE50DD002BCD99 /* Theme */,
+				6470E9292ECE50DD002BCD99 /* SharedSettings.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		6470E9342ECE5105002BCD99 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6470E9332ECE5105002BCD99 /* AlternativeCharactersTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		64FA45672ECE49B80032A81E = {
+			isa = PBXGroup;
+			children = (
+				6470E94F2ECE541E002BCD99 /* README.md */,
+				6470E9342ECE5105002BCD99 /* Tests */,
+				6470E92A2ECE50DD002BCD99 /* Shared */,
+				6470E91E2ECE50BF002BCD99 /* App */,
+				6470E9092ECE50AA002BCD99 /* KeyboardExtension */,
+				6470E8EE2ECE4E56002BCD99 /* BashkirKeyboardExtension */,
+				64FA45712ECE49B80032A81E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		64FA45712ECE49B80032A81E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				64FA45702ECE49B80032A81E /* bashboard.app */,
+				64FA457D2ECE49BA0032A81E /* bashboardTests.xctest */,
+				64FA45872ECE49BA0032A81E /* bashboardUITests.xctest */,
+				6470E8ED2ECE4E56002BCD99 /* BashkirKeyboardExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6470E8EC2ECE4E56002BCD99 /* BashkirKeyboardExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6470E8F62ECE4E56002BCD99 /* Build configuration list for PBXNativeTarget "BashkirKeyboardExtension" */;
+			buildPhases = (
+				6470E8E92ECE4E56002BCD99 /* Sources */,
+				6470E8EA2ECE4E56002BCD99 /* Frameworks */,
+				6470E8EB2ECE4E56002BCD99 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6470E8EE2ECE4E56002BCD99 /* BashkirKeyboardExtension */,
+			);
+			name = BashkirKeyboardExtension;
+			packageProductDependencies = (
+			);
+			productName = BashkirKeyboardExtension;
+			productReference = 6470E8ED2ECE4E56002BCD99 /* BashkirKeyboardExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		64FA456F2ECE49B80032A81E /* bashboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64FA45912ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboard" */;
+			buildPhases = (
+				64FA456C2ECE49B80032A81E /* Sources */,
+				64FA456D2ECE49B80032A81E /* Frameworks */,
+				64FA456E2ECE49B80032A81E /* Resources */,
+				6470E8F92ECE4E56002BCD99 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6470E8F32ECE4E56002BCD99 /* PBXTargetDependency */,
+			);
+			name = bashboard;
+			packageProductDependencies = (
+			);
+			productName = bashboard;
+			productReference = 64FA45702ECE49B80032A81E /* bashboard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		64FA457C2ECE49BA0032A81E /* bashboardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64FA45942ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboardTests" */;
+			buildPhases = (
+				64FA45792ECE49BA0032A81E /* Sources */,
+				64FA457A2ECE49BA0032A81E /* Frameworks */,
+				64FA457B2ECE49BA0032A81E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				64FA457F2ECE49BA0032A81E /* PBXTargetDependency */,
+			);
+			name = bashboardTests;
+			packageProductDependencies = (
+			);
+			productName = bashboardTests;
+			productReference = 64FA457D2ECE49BA0032A81E /* bashboardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		64FA45862ECE49BA0032A81E /* bashboardUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64FA45972ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboardUITests" */;
+			buildPhases = (
+				64FA45832ECE49BA0032A81E /* Sources */,
+				64FA45842ECE49BA0032A81E /* Frameworks */,
+				64FA45852ECE49BA0032A81E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				64FA45892ECE49BA0032A81E /* PBXTargetDependency */,
+			);
+			name = bashboardUITests;
+			packageProductDependencies = (
+			);
+			productName = bashboardUITests;
+			productReference = 64FA45872ECE49BA0032A81E /* bashboardUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		64FA45682ECE49B80032A81E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					6470E8EC2ECE4E56002BCD99 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					64FA456F2ECE49B80032A81E = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					64FA457C2ECE49BA0032A81E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 64FA456F2ECE49B80032A81E;
+					};
+					64FA45862ECE49BA0032A81E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 64FA456F2ECE49B80032A81E;
+					};
+				};
+			};
+			buildConfigurationList = 64FA456B2ECE49B80032A81E /* Build configuration list for PBXProject "bashboard" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 64FA45672ECE49B80032A81E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 64FA45712ECE49B80032A81E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				64FA456F2ECE49B80032A81E /* bashboard */,
+				64FA457C2ECE49BA0032A81E /* bashboardTests */,
+				64FA45862ECE49BA0032A81E /* bashboardUITests */,
+				6470E8EC2ECE4E56002BCD99 /* BashkirKeyboardExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6470E8EB2ECE4E56002BCD99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6470E9502ECE542D002BCD99 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA456E2ECE49B80032A81E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA457B2ECE49BA0032A81E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA45852ECE49BA0032A81E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6470E8E92ECE4E56002BCD99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6470E92B2ECE50DD002BCD99 /* ThemeManager.swift in Sources */,
+				6470E92C2ECE50DD002BCD99 /* KeyboardTheme.swift in Sources */,
+				6470E92D2ECE50DD002BCD99 /* ThemeTokens.swift in Sources */,
+				6470E92E2ECE50DD002BCD99 /* SharedSettings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA456C2ECE49B80032A81E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6470E91F2ECE50BF002BCD99 /* WelcomeView.swift in Sources */,
+				6470E9202ECE50BF002BCD99 /* SettingsStore.swift in Sources */,
+				6470E92F2ECE50DD002BCD99 /* ThemeManager.swift in Sources */,
+				6470E9302ECE50DD002BCD99 /* KeyboardTheme.swift in Sources */,
+				6470E9312ECE50DD002BCD99 /* ThemeTokens.swift in Sources */,
+				6470E9322ECE50DD002BCD99 /* SharedSettings.swift in Sources */,
+				6470E9212ECE50BF002BCD99 /* InstructionsView.swift in Sources */,
+				6470E9222ECE50BF002BCD99 /* RootView.swift in Sources */,
+				6470E9232ECE50BF002BCD99 /* AppMain.swift in Sources */,
+				6470E9242ECE50BF002BCD99 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA45792ECE49BA0032A81E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6470E9352ECE5105002BCD99 /* AlternativeCharactersTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64FA45832ECE49BA0032A81E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6470E8F32ECE4E56002BCD99 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6470E8EC2ECE4E56002BCD99 /* BashkirKeyboardExtension */;
+			targetProxy = 6470E8F22ECE4E56002BCD99 /* PBXContainerItemProxy */;
+		};
+		64FA457F2ECE49BA0032A81E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64FA456F2ECE49B80032A81E /* bashboard */;
+			targetProxy = 64FA457E2ECE49BA0032A81E /* PBXContainerItemProxy */;
+		};
+		64FA45892ECE49BA0032A81E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64FA456F2ECE49B80032A81E /* bashboard */;
+			targetProxy = 64FA45882ECE49BA0032A81E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6470E8F72ECE4E56002BCD99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BashkirKeyboardExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BashkirKeyboardExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboard.BashkirKeyboardExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6470E8F82ECE4E56002BCD99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BashkirKeyboardExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BashkirKeyboardExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboard.BashkirKeyboardExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		64FA458F2ECE49BA0032A81E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		64FA45902ECE49BA0032A81E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		64FA45922ECE49BA0032A81E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		64FA45932ECE49BA0032A81E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		64FA45952ECE49BA0032A81E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bashboard.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/bashboard";
+			};
+			name = Debug;
+		};
+		64FA45962ECE49BA0032A81E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bashboard.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/bashboard";
+			};
+			name = Release;
+		};
+		64FA45982ECE49BA0032A81E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = bashboard;
+			};
+			name = Debug;
+		};
+		64FA45992ECE49BA0032A81E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TQ2QF3B9M5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bainazar.bashboardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = bashboard;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6470E8F62ECE4E56002BCD99 /* Build configuration list for PBXNativeTarget "BashkirKeyboardExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6470E8F72ECE4E56002BCD99 /* Debug */,
+				6470E8F82ECE4E56002BCD99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64FA456B2ECE49B80032A81E /* Build configuration list for PBXProject "bashboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64FA458F2ECE49BA0032A81E /* Debug */,
+				64FA45902ECE49BA0032A81E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64FA45912ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64FA45922ECE49BA0032A81E /* Debug */,
+				64FA45932ECE49BA0032A81E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64FA45942ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64FA45952ECE49BA0032A81E /* Debug */,
+				64FA45962ECE49BA0032A81E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64FA45972ECE49BA0032A81E /* Build configuration list for PBXNativeTarget "bashboardUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64FA45982ECE49BA0032A81E /* Debug */,
+				64FA45992ECE49BA0032A81E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 64FA45682ECE49B80032A81E /* Project object */;
+}
