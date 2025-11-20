@@ -23,6 +23,14 @@ final class HapticFeedbackManager {
         }
         feedbackGenerator?.impactOccurred()
     }
+    
+    func playSelectionChanged() {
+        guard isEnabled else { return }
+        if feedbackGenerator == nil {
+            feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        }
+        feedbackGenerator?.impactOccurred(intensity: 0.5)
+    }
 
     @objc private func defaultsDidChange(_ notification: Notification) {
         guard let defaults = notification.object as? UserDefaults else { return }

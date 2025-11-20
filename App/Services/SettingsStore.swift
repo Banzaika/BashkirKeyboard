@@ -9,7 +9,11 @@ final class SettingsStore: ObservableObject {
     }
 
     @Published var selectedTheme: KeyboardTheme {
-        didSet { defaults.set(selectedTheme.rawValue, forKey: SharedSettingsKeys.selectedTheme) }
+        didSet {
+            defaults.set(selectedTheme.rawValue, forKey: SharedSettingsKeys.selectedTheme)
+            // Force synchronization to ensure keyboard extension sees the change
+            defaults.synchronize()
+        }
     }
 
     init(defaults: UserDefaults = UserDefaults(suiteName: SharedAppGroup.identifier) ?? .standard) {

@@ -13,7 +13,19 @@ final class KeyboardViewController: UIInputViewController {
     private var currentTheme: KeyboardTheme = .system
 
     private var tokens: KeyboardThemeTokens {
-        let scheme: ColorScheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
+        // Determine color scheme based on selected theme
+        let scheme: ColorScheme
+        switch currentTheme {
+        case .system:
+            // System theme follows device appearance
+            scheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
+        case .classic:
+            // Classic theme is always dark
+            scheme = .dark
+        case .liquidGlass:
+            // Liquid glass theme uses dark scheme
+            scheme = .dark
+        }
         return ThemeManager.tokens(for: currentTheme, colorScheme: scheme)
     }
 
@@ -21,11 +33,19 @@ final class KeyboardViewController: UIInputViewController {
         ThemeBridge.palette(for: tokens)
     }
 
-    private let defaults = UserDefaults(suiteName: SharedAppGroup.identifier) ?? .standard
+    private let defaults: UserDefaults = {
+        // Always use App Group UserDefaults, never standard
+        guard let appGroupDefaults = UserDefaults(suiteName: SharedAppGroup.identifier) else {
+            // Fallback should never happen, but use standard if App Group fails
+            return .standard
+        }
+        return appGroupDefaults
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         longPressHandler.containerView = view
+        longPressHandler.haptics = hapticManager
         longPressHandler.onCharacterSelected = { [weak self] character in
             self?.textDocumentProxy.insertText(character)
         }
@@ -41,12 +61,30 @@ final class KeyboardViewController: UIInputViewController {
         super.viewWillLayoutSubviews()
         keyboardView?.frame = view.bounds
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Reload theme every time keyboard appears
+        reloadThemeAndUpdateUI()
+    }
+    
+    private func reloadThemeAndUpdateUI() {
+        let oldTheme = currentTheme
+        loadThemeFromDefaults()
+        
+        // Always update UI, even if theme didn't change (to ensure colors are correct)
+        keyboardView?.updateTheme(palette)
+        reloadRows()
+    }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        keyboardView?.updateTheme(palette)
-        reloadRows()
+        // Only update if system theme is selected and appearance changed
+        if currentTheme == .system {
+            guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+            keyboardView?.updateTheme(palette)
+            reloadRows()
+        }
     }
 
     override func textDidChange(_ textInput: UITextInput?) {
@@ -55,16 +93,26 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func configureKeyboard() {
+        // Load theme BEFORE creating keyboard view
         loadThemeFromDefaults()
+        
+        // Force UserDefaults sync to get latest value
+        defaults.synchronize()
+        
         let keyboardView = KeyboardView(palette: palette)
         keyboardView.delegate = self
         view.addSubview(keyboardView)
         keyboardView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Set keyboard height to 35% of screen height
+        let screenHeight = UIScreen.main.bounds.height
+        let keyboardHeight = screenHeight * 0.35
+        
         NSLayoutConstraint.activate([
             keyboardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             keyboardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             keyboardView.topAnchor.constraint(equalTo: view.topAnchor),
-            keyboardView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            keyboardView.heightAnchor.constraint(equalToConstant: keyboardHeight)
         ])
         self.keyboardView = keyboardView
         reloadRows()
@@ -77,10 +125,14 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     private func loadThemeFromDefaults() {
+        // Force synchronization before reading
+        defaults.synchronize()
+        
         if let rawValue = defaults.string(forKey: SharedSettingsKeys.selectedTheme),
            let theme = KeyboardTheme(rawValue: rawValue) {
             currentTheme = theme
         } else {
+            // Default to system if no theme found
             currentTheme = .system
         }
     }
@@ -93,8 +145,11 @@ final class KeyboardViewController: UIInputViewController {
     }
 
     @objc private func handleDefaultsChange() {
+        // Theme changed in main app, reload and update
         loadThemeFromDefaults()
+        defaults.synchronize()
         keyboardView?.updateTheme(palette)
+        reloadRows()
     }
 }
 
@@ -112,6 +167,13 @@ extension KeyboardViewController: KeyboardViewDelegate {
                       didLongPress key: KeyboardKey,
                       from keyView: KeyView,
                       gesture: UILongPressGestureRecognizer) {
+        // Handle long press on emoji key - switch keyboard
+        if key.kind == .emoji && gesture.state == .began {
+            advanceToNextInputMode()
+            return
+        }
+        
+        // Handle long press for alternative characters
         guard let base = key.baseValue else { return }
         let alternatives = alternativeCharacters.alternatives(for: base)
         longPressHandler.handle(gesture: gesture, keyView: keyView, alternatives: alternatives, palette: palette)

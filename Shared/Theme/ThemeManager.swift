@@ -4,42 +4,77 @@ public enum ThemeManager {
     public static func tokens(for theme: KeyboardTheme, colorScheme: ColorScheme) -> KeyboardThemeTokens {
         switch theme {
         case .system:
-            return KeyboardThemeTokens(
-                backgroundColor: Color(.systemBackground),
-                keyBackgroundColor: Color(.secondarySystemBackground),
-                keyForegroundColor: Color(.label),
-                accentColor: Color(.systemBlue),
-                keyCornerRadius: 6,
-                keyShadow: Color.black.opacity(colorScheme == .dark ? 0 : 0.12),
-                keyShadowRadius: 1,
-                keyShadowOffset: CGSize(width: 0, height: 1),
-                blurStyle: nil
-            )
+            // System theme - adapts to device appearance (light/dark)
+            if colorScheme == .dark {
+                // Dark mode colors
+                return KeyboardThemeTokens(
+                    backgroundColor: color(hex: 0x2D2D2D),
+                    keyBackgroundColor: color(hex: 0x6C6C6C),
+                    specialKeyBackgroundColor: color(hex: 0x484848),
+                    returnKeyBackgroundColor: color(hex: 0x484848),
+                    keyForegroundColor: .white,
+                    accentColor: Color(.systemBlue),
+                    keyCornerRadius: 5,
+                    keyShadow: Color.black.opacity(0.25),
+                    keyShadowRadius: 2.0,
+                    keyShadowOffset: CGSize(width: 0, height: 1.5),
+                    blurStyle: nil
+                )
+            } else {
+                // Light mode colors
+                return KeyboardThemeTokens(
+                    backgroundColor: color(hex: 0xD2D3D8),
+                    keyBackgroundColor: color(hex: 0xFFFFFD),
+                    specialKeyBackgroundColor: color(hex: 0xABB0BC),
+                    returnKeyBackgroundColor: color(hex: 0xABB0BC),
+                    keyForegroundColor: .black,
+                    accentColor: Color(.systemBlue),
+                    keyCornerRadius: 5,
+                    keyShadow: Color.black.opacity(0.25),
+                    keyShadowRadius: 2.0,
+                    keyShadowOffset: CGSize(width: 0, height: 1.5),
+                    blurStyle: nil
+                )
+            }
         case .classic:
+            // Dark theme
             return KeyboardThemeTokens(
-                backgroundColor: colorScheme == .dark ? Color.black : Color.white,
-                keyBackgroundColor: colorScheme == .dark ? Color(red: 0.15, green: 0.15, blue: 0.18) : Color(red: 0.92, green: 0.92, blue: 0.94),
-                keyForegroundColor: colorScheme == .dark ? .white : .black,
-                accentColor: Color(.systemOrange),
+                backgroundColor: color(hex: 0x2D2D2D),
+                keyBackgroundColor: color(hex: 0x6C6C6C),
+                specialKeyBackgroundColor: color(hex: 0x484848),
+                returnKeyBackgroundColor: color(hex: 0x484848),
+                keyForegroundColor: .white,
+                accentColor: Color(.systemBlue),
                 keyCornerRadius: 5,
-                keyShadow: Color.black.opacity(0.18),
-                keyShadowRadius: 2,
-                keyShadowOffset: CGSize(width: 0, height: 1),
+                keyShadow: Color.black.opacity(0.25),
+                keyShadowRadius: 2.0,
+                keyShadowOffset: CGSize(width: 0, height: 1.5),
                 blurStyle: nil
             )
         case .liquidGlass:
-            // TODO: Replace with new iOS 26 liquid glass material once it becomes available.
+            // Liquid glass theme
+            let translucentKey = Color(.sRGB, red: 60/255, green: 60/255, blue: 60/255, opacity: 0.5)
+            let keyboardBackground = Color(.sRGB, red: 0, green: 0, blue: 0, opacity: 0.3)
             return KeyboardThemeTokens(
-                backgroundColor: Color.white.opacity(colorScheme == .dark ? 0.08 : 0.4),
-                keyBackgroundColor: Color.white.opacity(colorScheme == .dark ? 0.16 : 0.45),
-                keyForegroundColor: colorScheme == .dark ? Color(.systemTeal) : Color(.label),
+                backgroundColor: keyboardBackground,
+                keyBackgroundColor: translucentKey,
+                specialKeyBackgroundColor: translucentKey,
+                returnKeyBackgroundColor: color(hex: 0x007AFE),
+                keyForegroundColor: .white,
                 accentColor: Color(.systemCyan),
-                keyCornerRadius: 12,
-                keyShadow: Color.white.opacity(0.6),
-                keyShadowRadius: 6,
-                keyShadowOffset: CGSize(width: 0, height: 4),
-                blurStyle: colorScheme == .dark ? .systemUltraThinMaterialDark : .systemUltraThinMaterialLight
+                keyCornerRadius: 8,
+                keyShadow: Color.black.opacity(0.25),
+                keyShadowRadius: 2.0,
+                keyShadowOffset: CGSize(width: 0, height: 1.5),
+                blurStyle: nil
             )
         }
+    }
+
+    private static func color(hex: UInt, alpha: Double = 1.0) -> Color {
+        let red = Double((hex >> 16) & 0xFF) / 255.0
+        let green = Double((hex >> 8) & 0xFF) / 255.0
+        let blue = Double(hex & 0xFF) / 255.0
+        return Color(.sRGB, red: red, green: green, blue: blue, opacity: alpha)
     }
 }

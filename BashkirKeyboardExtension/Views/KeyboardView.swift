@@ -30,21 +30,33 @@ final class KeyboardView: UIView {
 
         applyBackgroundIfNeeded()
 
-        rows.forEach { row in
+        rows.enumerated().forEach { rowIndex, row in
             let rowStack = UIStackView()
             rowStack.axis = .horizontal
             rowStack.spacing = 6
-            rowStack.distribution = .fillEqually
+            rowStack.alignment = .fill
+            
+            let isBottomRow = isPrimaryBottomRow(row)
+            let isLetterRow = rowIndex < 3 // Rows 0, 1, 2 are letter rows
+            
+            // Use fillEqually for letter rows, fill for bottom row with specific ratios
+            rowStack.distribution = isBottomRow ? .fill : .fillEqually
 
-            row.keys.forEach { key in
+            row.keys.enumerated().forEach { keyIndex, key in
                 let keyView = KeyView(key: key, palette: palette, isUppercase: state.isUppercase)
                 keyView.delegate = self
                 keyViews[key.id] = keyView
                 rowStack.addArrangedSubview(keyView)
-
-                if key.kind == .space {
-                    keyView.widthAnchor.constraint(equalTo: rowStack.widthAnchor, multiplier: 0.5).isActive = true
+                
+                // Apply width = 0.68 * height ratio for letter rows only
+                if isLetterRow {
+                    keyView.widthAnchor.constraint(equalTo: keyView.heightAnchor, multiplier: 0.68).isActive = true
                 }
+            }
+
+            // Apply bottom row constraints AFTER all keys are added
+            if isBottomRow {
+                applyBottomRowConstraints(on: rowStack)
             }
 
             rowsStackView.addArrangedSubview(rowStack)
@@ -59,20 +71,23 @@ final class KeyboardView: UIView {
         self.palette = palette
         backgroundColor = palette.backgroundColor
         keyViews.values.forEach { $0.updateTheme(palette) }
+        applyBackgroundIfNeeded()
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         rowsStackView.axis = .vertical
-        rowsStackView.spacing = 8
+        rowsStackView.spacing = 10
+        rowsStackView.distribution = .fillEqually
+        rowsStackView.alignment = .fill
         addSubview(rowsStackView)
         rowsStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            rowsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            rowsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            rowsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 6),
-            rowsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6)
+            rowsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 3),
+            rowsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -3),
+            rowsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            rowsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
 
         applyBackgroundIfNeeded()
@@ -97,6 +112,35 @@ final class KeyboardView: UIView {
         } else {
             backgroundColor = palette.backgroundColor
         }
+    }
+
+    private func isPrimaryBottomRow(_ row: KeyboardRow) -> Bool {
+        guard row.keys.count == 4 else { return false }
+        return row.keys[0].kind == .numbersToggle &&
+               row.keys[1].kind == .emoji &&
+               row.keys[2].kind == .space &&
+               row.keys[3].kind == .returnKey
+    }
+
+    private func applyBottomRowConstraints(on rowStack: UIStackView) {
+        let keyViewsInRow = rowStack.arrangedSubviews.compactMap { $0 as? KeyView }
+        guard keyViewsInRow.count == 4 else { return }
+        
+        let numbersKey = keyViewsInRow[0]
+        let emojiKey = keyViewsInRow[1]
+        let spaceKey = keyViewsInRow[2]
+        let returnKey = keyViewsInRow[3]
+
+        // Remove any existing width constraints that might conflict
+        numbersKey.removeConstraints(numbersKey.constraints.filter { $0.firstAttribute == .width })
+        emojiKey.removeConstraints(emojiKey.constraints.filter { $0.firstAttribute == .width })
+        spaceKey.removeConstraints(spaceKey.constraints.filter { $0.firstAttribute == .width })
+        returnKey.removeConstraints(returnKey.constraints.filter { $0.firstAttribute == .width })
+
+        // Apply width ratio: 1 : 1 : 4.45 : 2.2
+        emojiKey.widthAnchor.constraint(equalTo: numbersKey.widthAnchor).isActive = true
+        spaceKey.widthAnchor.constraint(equalTo: numbersKey.widthAnchor, multiplier: 4.45).isActive = true
+        returnKey.widthAnchor.constraint(equalTo: numbersKey.widthAnchor, multiplier: 2.2).isActive = true
     }
 }
 

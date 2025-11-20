@@ -11,6 +11,7 @@ struct KeyboardKey: Identifiable, Hashable {
         case lettersToggle
         case nextKeyboard
         case symbolToggle
+        case emoji
     }
 
     let id = UUID()
@@ -43,6 +44,8 @@ struct KeyboardKey: Identifiable, Hashable {
             return "#+="
         case .nextKeyboard:
             return "🌐"
+        case .emoji:
+            return "😀"
         }
     }
 
@@ -66,6 +69,8 @@ struct KeyboardKey: Identifiable, Hashable {
             return "Symbols"
         case .nextKeyboard:
             return "Next Keyboard"
+        case .emoji:
+            return "Emoji"
         }
     }
 }

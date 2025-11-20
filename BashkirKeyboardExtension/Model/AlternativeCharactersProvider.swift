@@ -20,6 +20,7 @@ struct AlternativeCharactersProvider {
         "о": ["ө"],
         "н": ["ң"],
         "г": ["ғ"],
-        "к": ["ҡ"]
+        "к": ["ҡ"],
+        "ь": ["ъ"]
     ])
 }

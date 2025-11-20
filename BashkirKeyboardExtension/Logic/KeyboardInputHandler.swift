@@ -54,7 +54,11 @@ final class KeyboardInputHandler {
         case .lettersToggle:
             state.layoutMode = .letters
         case .symbolToggle:
-            state.layoutMode = .numbers
+            state.layoutMode = .symbols
+        case .emoji:
+            // Emoji key - can be handled by system or custom implementation
+            // For now, just do nothing as iOS handles emoji keyboard switching
+            break
         case .nextKeyboard:
             // handled by UIInputViewController directly
             break

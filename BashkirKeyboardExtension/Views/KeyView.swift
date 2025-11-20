@@ -11,6 +11,26 @@ final class KeyView: UIControl {
 
     private let titleLabel = UILabel()
     private var palette: UIKitThemePalette
+    private var hapticGenerator: UIImpactFeedbackGenerator?
+    
+    private var baseBackgroundColor: UIColor {
+        if key.kind == .returnKey {
+            return palette.returnKeyBackgroundColor
+        }
+        if isSpecialKey {
+            return palette.specialKeyBackgroundColor
+        }
+        return palette.keyBackgroundColor
+    }
+    
+    private var isSpecialKey: Bool {
+        switch key.kind {
+        case .numbersToggle, .emoji, .backspace:
+            return true
+        default:
+            return false
+        }
+    }
 
     init(key: KeyboardKey, palette: UIKitThemePalette, isUppercase: Bool) {
         self.key = key
@@ -27,58 +47,106 @@ final class KeyView: UIControl {
     }
 
     override var isHighlighted: Bool {
-        didSet { updateHighlightState() }
+        didSet { 
+            updateHighlightState()
+            // Trigger haptic feedback on touch down
+            if isHighlighted {
+                triggerHapticFeedback()
+            }
+        }
     }
 
     func updateTitle(isUppercase: Bool) {
-        titleLabel.text = key.displayText(isUppercase: isUppercase)
+        // Special handling for space key - show "Башҡортса"
+        if key.kind == .space {
+            titleLabel.text = "Башҡортса"
+        } else {
+            titleLabel.text = key.displayText(isUppercase: isUppercase)
+        }
         setNeedsLayout()
     }
 
     func updateTheme(_ palette: UIKitThemePalette) {
         self.palette = palette
-        backgroundColor = palette.keyBackgroundColor
-        titleLabel.textColor = palette.keyForegroundColor
-        layer.cornerRadius = palette.keyCornerRadius
-        layer.shadowColor = palette.keyShadowColor.cgColor
-        layer.shadowOpacity = Float(palette.keyShadowColor.cgColor.alpha)
-        layer.shadowRadius = palette.keyShadowRadius
-        layer.shadowOffset = palette.keyShadowOffset
+        applyPalette()
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = palette.keyBackgroundColor
-        layer.cornerRadius = palette.keyCornerRadius
-        layer.shadowColor = palette.keyShadowColor.cgColor
-        layer.shadowRadius = palette.keyShadowRadius
-        layer.shadowOffset = palette.keyShadowOffset
-        layer.shadowOpacity = 0.2
+        
+        // CRITICAL: masksToBounds must be false for shadows to be visible
+        layer.masksToBounds = false
+        
+        applyPalette()
 
-        titleLabel.font = UIFont.systemFont(ofSize: 20)
+        // System keyboard font size - adjust based on key type
+        let fontSize: CGFloat
+        switch key.kind {
+        case .character:
+            fontSize = 22
+        case .shift, .backspace, .returnKey:
+            fontSize = 20
+        case .numbersToggle, .lettersToggle, .symbolToggle:
+            fontSize = 18
+        case .emoji:
+            fontSize = 24 // Emoji key shows emoji icon
+        case .space:
+            fontSize = 14 // Smaller for "Башҡортса" text
+        default:
+            fontSize = 20
+        }
+        
+        titleLabel.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         titleLabel.textAlignment = .center
         titleLabel.textColor = palette.keyForegroundColor
         titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.minimumScaleFactor = 0.6
+        titleLabel.minimumScaleFactor = 0.7
 
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 6),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4)
         ])
 
         addTarget(self, action: #selector(handleTap), for: .touchUpInside)
         accessibilityLabel = key.accessibilityLabel
     }
 
+    private func triggerHapticFeedback() {
+        // Check if haptics are enabled from shared UserDefaults
+        let defaults = UserDefaults(suiteName: SharedAppGroup.identifier) ?? .standard
+        let hapticsEnabled = defaults.object(forKey: SharedSettingsKeys.hapticsEnabled) as? Bool ?? true
+        
+        guard hapticsEnabled else { return }
+        
+        // Prepare generator if needed
+        if hapticGenerator == nil {
+            hapticGenerator = UIImpactFeedbackGenerator(style: .light)
+            hapticGenerator?.prepare()
+        }
+        
+        // Trigger on main thread
+        DispatchQueue.main.async { [weak self] in
+            self?.hapticGenerator?.impactOccurred()
+        }
+    }
+
     private func updateHighlightState() {
         let scale: CGFloat = isHighlighted ? 0.95 : 1.0
+        let baseColor = baseBackgroundColor
+        let targetColor: UIColor
+        if isHighlighted {
+            let alpha = max(0.2, CGFloat(baseColor.cgColor.alpha) * 0.85)
+            targetColor = baseColor.withAlphaComponent(alpha)
+        } else {
+            targetColor = baseColor
+        }
         UIView.animate(withDuration: 0.08) {
             self.transform = CGAffineTransform(scaleX: scale, y: scale)
-            self.backgroundColor = self.isHighlighted ? self.palette.keyBackgroundColor.withAlphaComponent(0.7) : self.palette.keyBackgroundColor
+            self.backgroundColor = targetColor
         }
     }
 
@@ -88,5 +156,20 @@ final class KeyView: UIControl {
 
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         delegate?.keyViewDidLongPress(self, gesture: gesture)
+    }
+
+    private func applyPalette() {
+        backgroundColor = baseBackgroundColor
+        titleLabel.textColor = palette.keyForegroundColor
+        layer.cornerRadius = palette.keyCornerRadius
+        
+        // Apply drop shadow for depth - these values make shadows visible
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.25).cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 1.5)
+        layer.shadowRadius = 2.0
+        layer.shadowOpacity = 0.25
+        
+        // CRITICAL: masksToBounds must be false for shadows to work
+        layer.masksToBounds = false
     }
 }

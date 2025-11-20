@@ -3,6 +3,8 @@ import SwiftUI
 public struct KeyboardThemeTokens {
     public let backgroundColor: Color
     public let keyBackgroundColor: Color
+    public let specialKeyBackgroundColor: Color
+    public let returnKeyBackgroundColor: Color
     public let keyForegroundColor: Color
     public let accentColor: Color
     public let keyCornerRadius: CGFloat
@@ -13,6 +15,8 @@ public struct KeyboardThemeTokens {
 
     public init(backgroundColor: Color,
                 keyBackgroundColor: Color,
+                specialKeyBackgroundColor: Color,
+                returnKeyBackgroundColor: Color,
                 keyForegroundColor: Color,
                 accentColor: Color,
                 keyCornerRadius: CGFloat,
@@ -22,6 +26,8 @@ public struct KeyboardThemeTokens {
                 blurStyle: UIBlurEffect.Style?) {
         self.backgroundColor = backgroundColor
         self.keyBackgroundColor = keyBackgroundColor
+        self.specialKeyBackgroundColor = specialKeyBackgroundColor
+        self.returnKeyBackgroundColor = returnKeyBackgroundColor
         self.keyForegroundColor = keyForegroundColor
         self.accentColor = accentColor
         self.keyCornerRadius = keyCornerRadius
