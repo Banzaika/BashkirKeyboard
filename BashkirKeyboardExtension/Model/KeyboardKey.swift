@@ -39,7 +39,7 @@ struct KeyboardKey: Identifiable, Hashable {
         case .numbersToggle:
             return "123"
         case .lettersToggle:
-            return "АБВ"
+            return "ABC"
         case .symbolToggle:
             return "#+="
         case .nextKeyboard:

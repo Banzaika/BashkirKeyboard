@@ -8,6 +8,7 @@ final class KeyboardViewController: UIInputViewController {
     private lazy var inputHandler = KeyboardInputHandler(textDocumentProxy: textDocumentProxy,
                                                          haptics: hapticManager)
     private let longPressHandler = LongPressHandler()
+    private var lastLayoutMode: KeyboardLayoutMode = .letters
 
     private var keyboardView: KeyboardView?
     private var currentTheme: KeyboardTheme = .system
@@ -19,8 +20,9 @@ final class KeyboardViewController: UIInputViewController {
         case .system:
             // System theme follows device appearance
             scheme = traitCollection.userInterfaceStyle == .dark ? .dark : .light
-        case .classic:
-            // Classic theme is always dark
+        case .light:
+            scheme = .light
+        case .dark, .classic:
             scheme = .dark
         case .liquidGlass:
             // Liquid glass theme uses dark scheme
@@ -53,13 +55,9 @@ final class KeyboardViewController: UIInputViewController {
         configureKeyboard()
         inputHandler.stateDidChange = { [weak self] state in
             self?.keyboardView?.update(state: state)
+            self?.handleLayoutChangeIfNeeded(state.layoutMode)
             self?.reloadRows()
         }
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        keyboardView?.frame = view.bounds
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,8 +67,8 @@ final class KeyboardViewController: UIInputViewController {
     }
     
     private func reloadThemeAndUpdateUI() {
-        let oldTheme = currentTheme
         loadThemeFromDefaults()
+        longPressHandler.popupDelay = defaults.object(forKey: SharedSettingsKeys.popupDelay) as? Double ?? 0.2
         
         // Always update UI, even if theme didn't change (to ensure colors are correct)
         keyboardView?.updateTheme(palette)
@@ -98,21 +96,24 @@ final class KeyboardViewController: UIInputViewController {
         
         // Force UserDefaults sync to get latest value
         defaults.synchronize()
+        longPressHandler.popupDelay = defaults.object(forKey: SharedSettingsKeys.popupDelay) as? Double ?? 0.2
         
         let keyboardView = KeyboardView(palette: palette)
         keyboardView.delegate = self
         view.addSubview(keyboardView)
         keyboardView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Set keyboard height to 35% of screen height
+        // Set keyboard height to 35% of screen height and keep above the system bar
         let screenHeight = UIScreen.main.bounds.height
         let keyboardHeight = screenHeight * 0.35
+        let heightConstraint = keyboardView.heightAnchor.constraint(equalToConstant: keyboardHeight)
         
         NSLayoutConstraint.activate([
             keyboardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             keyboardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            keyboardView.topAnchor.constraint(equalTo: view.topAnchor),
-            keyboardView.heightAnchor.constraint(equalToConstant: keyboardHeight)
+            keyboardView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            heightConstraint,
+            keyboardView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor)
         ])
         self.keyboardView = keyboardView
         reloadRows()
@@ -120,8 +121,18 @@ final class KeyboardViewController: UIInputViewController {
 
     private func reloadRows() {
         guard let keyboardView else { return }
+        loadThemeFromDefaults()
+        keyboardView.updateTheme(palette)
         let rows = layout.rows(for: inputHandler.state.layoutMode)
-        keyboardView.apply(rows: rows, state: inputHandler.state, palette: palette)
+        if inputHandler.state.layoutMode == .emoji {
+            keyboardView.apply(rows: [layout.emojiBottomRow],
+                               state: inputHandler.state,
+                               palette: palette,
+                               showingEmojiPanel: true,
+                               emojiCharacters: emojiCharacters())
+        } else {
+            keyboardView.apply(rows: rows, state: inputHandler.state, palette: palette)
+        }
     }
 
     private func loadThemeFromDefaults() {
@@ -148,8 +159,20 @@ final class KeyboardViewController: UIInputViewController {
         // Theme changed in main app, reload and update
         loadThemeFromDefaults()
         defaults.synchronize()
+        longPressHandler.popupDelay = defaults.object(forKey: SharedSettingsKeys.popupDelay) as? Double ?? 0.2
         keyboardView?.updateTheme(palette)
         reloadRows()
+    }
+    
+    private func handleLayoutChangeIfNeeded(_ mode: KeyboardLayoutMode) {
+        if mode != lastLayoutMode {
+            keyboardView?.triggerSpaceHint(duration: 1.0)
+            lastLayoutMode = mode
+        }
+    }
+    
+    private func emojiCharacters() -> [String] {
+        return ["😀", "😁", "😂", "🤣", "😊", "😍", "😘", "😎", "🤩", "😇", "🤔", "😴"]
     }
 }
 
@@ -158,6 +181,8 @@ extension KeyboardViewController: KeyboardViewDelegate {
         switch key.kind {
         case .nextKeyboard:
             advanceToNextInputMode()
+        case .emoji:
+            inputHandler.handle(key: key)
         default:
             inputHandler.handle(key: key)
         }
@@ -167,15 +192,14 @@ extension KeyboardViewController: KeyboardViewDelegate {
                       didLongPress key: KeyboardKey,
                       from keyView: KeyView,
                       gesture: UILongPressGestureRecognizer) {
-        // Handle long press on emoji key - switch keyboard
-        if key.kind == .emoji && gesture.state == .began {
-            advanceToNextInputMode()
-            return
-        }
-        
         // Handle long press for alternative characters
         guard let base = key.baseValue else { return }
         let alternatives = alternativeCharacters.alternatives(for: base)
-        longPressHandler.handle(gesture: gesture, keyView: keyView, alternatives: alternatives, palette: palette)
+        longPressHandler.handle(gesture: gesture,
+                                keyView: keyView,
+                                baseValue: base,
+                                alternatives: alternatives,
+                                isUppercase: inputHandler.state.isUppercase,
+                                palette: palette)
     }
 }

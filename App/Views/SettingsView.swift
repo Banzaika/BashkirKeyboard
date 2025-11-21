@@ -19,6 +19,21 @@ struct SettingsView: View {
                         }
                     }
                 }
+                
+                Section("Удержание клавиши") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Popup delay")
+                            Spacer()
+                            Text(String(format: "%.2fs", settingsStore.popupDelay))
+                                .monospacedDigit()
+                                .foregroundStyle(.secondary)
+                        }
+                        Slider(value: $settingsStore.popupDelay,
+                               in: 0.05...0.5,
+                               step: 0.01)
+                    }
+                }
 
                 Section("Справка") {
                     Text("Настройки синхронизируются с клавиатурой через App Group: \(SharedAppGroup.identifier). Убедитесь, что обе цели используют один и тот же идентификатор.")

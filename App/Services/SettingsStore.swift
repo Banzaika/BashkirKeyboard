@@ -7,6 +7,13 @@ final class SettingsStore: ObservableObject {
     @Published var hapticsEnabled: Bool {
         didSet { defaults.set(hapticsEnabled, forKey: SharedSettingsKeys.hapticsEnabled) }
     }
+    
+    @Published var popupDelay: Double {
+        didSet {
+            defaults.set(popupDelay, forKey: SharedSettingsKeys.popupDelay)
+            defaults.synchronize()
+        }
+    }
 
     @Published var selectedTheme: KeyboardTheme {
         didSet {
@@ -19,6 +26,7 @@ final class SettingsStore: ObservableObject {
     init(defaults: UserDefaults = UserDefaults(suiteName: SharedAppGroup.identifier) ?? .standard) {
         self.defaults = defaults
         self.hapticsEnabled = defaults.object(forKey: SharedSettingsKeys.hapticsEnabled) as? Bool ?? true
+        self.popupDelay = defaults.object(forKey: SharedSettingsKeys.popupDelay) as? Double ?? 0.2
         if let rawValue = defaults.string(forKey: SharedSettingsKeys.selectedTheme),
            let theme = KeyboardTheme(rawValue: rawValue) {
             self.selectedTheme = theme

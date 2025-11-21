@@ -4,10 +4,10 @@ import XCTest
 final class AlternativeCharactersProviderTests: XCTestCase {
     func testBashkirAlternatives() {
         let provider = AlternativeCharactersProvider.default
-        XCTAssertEqual(provider.alternatives(for: "з"), ["ҙ"])
-        XCTAssertEqual(provider.alternatives(for: "с"), ["ҫ"])
-        XCTAssertEqual(provider.alternatives(for: "к"), ["ҡ"])
-        XCTAssertTrue(provider.alternatives(for: "p").isEmpty)
+        XCTAssertEqual(provider.alternatives(for: "з")?.lowercase, ["ҙ"])
+        XCTAssertEqual(provider.alternatives(for: "с")?.uppercase, ["Ҫ"])
+        XCTAssertEqual(provider.alternatives(for: "к")?.uppercase, ["Ҡ"])
+        XCTAssertNil(provider.alternatives(for: "p"))
     }
 }
 

@@ -1,14 +1,21 @@
 import Foundation
 
 struct AlternativeCharactersProvider {
+    struct Alternatives {
+        let lowercase: [String]
+        let uppercase: [String]
+    }
+
     private let mapping: [String: [String]]
 
     init(mapping: [String: [String]]) {
         self.mapping = mapping
     }
 
-    func alternatives(for base: String) -> [String] {
-        mapping[base.lowercased()] ?? []
+    func alternatives(for base: String) -> Alternatives? {
+        guard let lowercase = mapping[base.lowercased()] else { return nil }
+        let uppercase = lowercase.map { $0.uppercased() }
+        return Alternatives(lowercase: lowercase, uppercase: uppercase)
     }
 
     static let `default` = AlternativeCharactersProvider(mapping: [

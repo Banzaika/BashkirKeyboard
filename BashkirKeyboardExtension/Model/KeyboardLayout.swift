@@ -4,12 +4,14 @@ enum KeyboardLayoutMode {
     case letters
     case numbers
     case symbols
+    case emoji
 }
 
 struct KeyboardLayout {
     let letterRows: [KeyboardRow]
     let numberRows: [KeyboardRow]
     let symbolRows: [KeyboardRow]
+    let emojiBottomRow: KeyboardRow
 
     func rows(for mode: KeyboardLayoutMode) -> [KeyboardRow] {
         switch mode {
@@ -19,6 +21,8 @@ struct KeyboardLayout {
             return numberRows
         case .symbols:
             return symbolRows
+        case .emoji:
+            return []
         }
     }
 
@@ -71,7 +75,13 @@ struct KeyboardLayout {
             KeyboardRow(keys: [
                 KeyboardKey(kind: .lettersToggle)
             ])
-        ]
+        ],
+        emojiBottomRow: KeyboardRow(keys: [
+            KeyboardKey(kind: .lettersToggle),
+            KeyboardKey(kind: .emoji),
+            KeyboardKey(kind: .space),
+            KeyboardKey(kind: .returnKey)
+        ])
     )
 }
 

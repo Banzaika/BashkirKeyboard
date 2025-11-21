@@ -36,7 +36,7 @@ public enum ThemeManager {
                     blurStyle: nil
                 )
             }
-        case .classic:
+        case .dark, .classic:
             // Dark theme
             return KeyboardThemeTokens(
                 backgroundColor: color(hex: 0x2D2D2D),
@@ -44,6 +44,20 @@ public enum ThemeManager {
                 specialKeyBackgroundColor: color(hex: 0x484848),
                 returnKeyBackgroundColor: color(hex: 0x484848),
                 keyForegroundColor: .white,
+                accentColor: Color(.systemBlue),
+                keyCornerRadius: 5,
+                keyShadow: Color.black.opacity(0.25),
+                keyShadowRadius: 2.0,
+                keyShadowOffset: CGSize(width: 0, height: 1.5),
+                blurStyle: nil
+            )
+        case .light:
+            return KeyboardThemeTokens(
+                backgroundColor: color(hex: 0xD2D3D8),
+                keyBackgroundColor: color(hex: 0xFFFFFD),
+                specialKeyBackgroundColor: color(hex: 0xABB0BC),
+                returnKeyBackgroundColor: color(hex: 0xABB0BC),
+                keyForegroundColor: .black,
                 accentColor: Color(.systemBlue),
                 keyCornerRadius: 5,
                 keyShadow: Color.black.opacity(0.25),
@@ -62,11 +76,11 @@ public enum ThemeManager {
                 returnKeyBackgroundColor: color(hex: 0x007AFE),
                 keyForegroundColor: .white,
                 accentColor: Color(.systemCyan),
-                keyCornerRadius: 8,
+                keyCornerRadius: 10,
                 keyShadow: Color.black.opacity(0.25),
                 keyShadowRadius: 2.0,
                 keyShadowOffset: CGSize(width: 0, height: 1.5),
-                blurStyle: nil
+                blurStyle: .systemUltraThinMaterialDark
             )
         }
     }

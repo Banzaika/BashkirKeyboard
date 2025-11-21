@@ -13,6 +13,7 @@ final class PopupKeyView: UIView {
     private var palette: UIKitThemePalette
     private let containerView = UIView()
     private var blurView: UIVisualEffectView?
+    private var labelsStackView: UIStackView?
     
     // Apple-style bubble shape with arrow pointing down to the key
     private let shapeLayer = CAShapeLayer()
@@ -127,10 +128,10 @@ final class PopupKeyView: UIView {
         containerView.layer.cornerRadius = palette.keyCornerRadius
         
         // Add shadow for depth
-        layer.shadowColor = palette.keyShadowColor.cgColor
-        layer.shadowRadius = palette.keyShadowRadius * 2
-        layer.shadowOpacity = 0.3
-        layer.shadowOffset = CGSize(width: 0, height: palette.keyShadowOffset.height * 2)
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.35).cgColor
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.35
+        layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.masksToBounds = false
     }
     
@@ -175,6 +176,9 @@ final class PopupKeyView: UIView {
     }
     
     private func configureLabels(with alternatives: [String]) {
+        labelsStackView?.removeFromSuperview()
+        characterLabels.removeAll()
+        
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
@@ -183,7 +187,7 @@ final class PopupKeyView: UIView {
         alternatives.forEach { character in
             let label = UILabel()
             label.text = character
-            label.font = UIFont.systemFont(ofSize: 26, weight: .regular)
+            label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
             label.textColor = palette.keyForegroundColor
             label.textAlignment = .center
             label.backgroundColor = .clear
@@ -206,6 +210,21 @@ final class PopupKeyView: UIView {
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bubbleOffset)
         ])
+        
+        labelsStackView = stackView
+    }
+    
+    func updateCharacters(_ characters: [String]) {
+        configureLabels(with: characters)
+        setNeedsLayout()
+        layoutIfNeeded()
+        updateBubbleShape()
+    }
+    
+    func preferredSize(maxWidth: CGFloat) -> CGSize {
+        let count = max(1, characterLabels.count)
+        let width = min(maxWidth, CGFloat(count) * 45 + 16)
+        return CGSize(width: width, height: 62)
     }
     
     private func updateLabelHighlights() {
@@ -213,7 +232,7 @@ final class PopupKeyView: UIView {
             if index == highlightedIndex {
                 // Highlighted state: larger, bold, with background
                 label.backgroundColor = palette.keyForegroundColor.withAlphaComponent(0.15)
-                label.font = UIFont.systemFont(ofSize: 28, weight: .semibold)
+                label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
                 label.textColor = palette.keyForegroundColor
                 UIView.animate(withDuration: 0.12, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5) {
                     label.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
@@ -221,7 +240,7 @@ final class PopupKeyView: UIView {
             } else {
                 // Normal state
                 label.backgroundColor = .clear
-                label.font = UIFont.systemFont(ofSize: 26, weight: .regular)
+                label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
                 label.textColor = palette.keyForegroundColor
                 UIView.animate(withDuration: 0.12) {
                     label.transform = .identity

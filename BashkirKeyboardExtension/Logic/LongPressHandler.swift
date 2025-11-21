@@ -5,6 +5,7 @@ final class LongPressHandler: PopupKeyViewDelegate {
     weak var containerView: UIView?
     var onCharacterSelected: ((String) -> Void)?
     var haptics: HapticFeedbackManager?
+    var popupDelay: TimeInterval = 0.2
     private var popupView: PopupKeyView?
     private var palette: UIKitThemePalette?
     private weak var sourceKeyView: KeyView?
@@ -13,86 +14,100 @@ final class LongPressHandler: PopupKeyViewDelegate {
     // Touch tracking for sliding selection
     private var panGesture: UIPanGestureRecognizer?
     private var lastHighlightedCharacter: String?
+    private var expansionWorkItem: DispatchWorkItem?
+    private var popupHostView: UIView?
+    private var baseCharacter: String?
+    private var currentAnchorFrame: CGRect = .zero
+    private var isExpanded = false
+    private var currentCharacters: [String] = []
     
     func handle(gesture: UILongPressGestureRecognizer,
                 keyView: KeyView,
-                alternatives: [String],
+                baseValue: String,
+                alternatives: AlternativeCharactersProvider.Alternatives?,
+                isUppercase: Bool,
                 palette: UIKitThemePalette) {
-        guard !alternatives.isEmpty else { return }
         self.palette = palette
         self.sourceKeyView = keyView
         self.gestureRecognizer = gesture
+        self.baseCharacter = isUppercase ? baseValue.uppercased() : baseValue.lowercased()
         
         switch gesture.state {
         case .began:
-            showPopup(from: keyView, alternatives: alternatives)
-            setupPanGesture(for: keyView)
+            showInitialPopup(from: keyView)
+            scheduleExpansion(alternatives: alternatives, isUppercase: isUppercase)
         case .changed:
-            // Handle sliding selection - touch moved while finger is down
-            guard let containerView = containerView else { break }
-            let location = gesture.location(in: containerView)
-            updatePopupHighlight(for: location)
+            guard let host = popupHostView else { break }
+            let locationInHost = gesture.location(in: host)
+            if isExpanded {
+                updatePopupHighlight(for: locationInHost)
+            }
         case .ended:
-            // Finger lifted - insert selected character
-            selectAndInsert()
-            removePopup()
+            expansionWorkItem?.cancel()
+            if isExpanded {
+                selectAndInsert()
+            } else if let baseCharacter = self.baseCharacter {
+                onCharacterSelected?(baseCharacter)
+            }
+            cleanupPopup()
         case .cancelled, .failed:
-            removePopup()
+            expansionWorkItem?.cancel()
+            cleanupPopup()
         default:
             break
         }
     }
     
-    private func showPopup(from keyView: KeyView, alternatives: [String]) {
-        guard let containerView else { return }
-        removePopup()
-        
+    private func showInitialPopup(from keyView: KeyView) {
+        guard let host = hostView(for: keyView) else { return }
+        cleanupPopup()
+        currentCharacters = [baseCharacter ?? keyView.key.displayText(isUppercase: true)]
         let fallbackTokens = ThemeManager.tokens(for: .system, colorScheme: .light)
         let popupPalette = self.palette ?? ThemeBridge.palette(for: fallbackTokens)
-        let popup = PopupKeyView(alternatives: alternatives, palette: popupPalette)
+        let popup = PopupKeyView(alternatives: currentCharacters, palette: popupPalette)
         popup.delegate = self
-        popup.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(popup)
+        popup.translatesAutoresizingMaskIntoConstraints = true
+        popup.isUserInteractionEnabled = false
         
-        // Calculate popup size based on number of alternatives
-        let minWidth: CGFloat = 60
-        let maxWidth: CGFloat = 400
-        let widthPerChar: CGFloat = 45
-        let popupWidth = min(maxWidth, max(minWidth, CGFloat(alternatives.count) * widthPerChar + 16))
-        let popupHeight: CGFloat = 50
+        let keyFrame = keyView.convert(keyView.bounds, to: host)
+        currentAnchorFrame = keyFrame
+        let size = popup.preferredSize(maxWidth: host.bounds.width - 20)
+        let originX = min(max(8, keyFrame.midX - size.width / 2), host.bounds.width - size.width - 8)
+        let originY = max(4, keyFrame.minY - size.height + 6)
+        popup.frame = CGRect(origin: CGPoint(x: originX, y: originY), size: size)
         
-        NSLayoutConstraint.activate([
-            popup.widthAnchor.constraint(equalToConstant: popupWidth),
-            popup.heightAnchor.constraint(equalToConstant: popupHeight + 12), // +12 for arrow
-            popup.bottomAnchor.constraint(equalTo: keyView.topAnchor, constant: -4),
-            popup.centerXAnchor.constraint(equalTo: keyView.centerXAnchor)
-        ])
-        
+        host.addSubview(popup)
         popupView = popup
         popup.animateAppearance()
-        
-        // Set initial highlight to first character after layout
-        popup.setNeedsLayout()
-        popup.layoutIfNeeded()
-        
-        DispatchQueue.main.async { [weak popup] in
-            guard let popup = popup else { return }
-            // Highlight first character by default
-            if popup.bounds.width > 0 {
-                let initialLocation = CGPoint(x: popup.bounds.midX, y: popup.bounds.midY)
-                popup.updateHighlight(for: initialLocation)
-            }
-        }
     }
     
-    private func setupPanGesture(for keyView: KeyView) {
-        // Remove existing pan gesture if any
-        if let existingPan = panGesture {
-            existingPan.view?.removeGestureRecognizer(existingPan)
+    private func scheduleExpansion(alternatives: AlternativeCharactersProvider.Alternatives?, isUppercase: Bool) {
+        expansionWorkItem?.cancel()
+        guard let alternatives = alternatives else { return }
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.expandPopup(with: alternatives, isUppercase: isUppercase)
         }
+        expansionWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + popupDelay, execute: workItem)
+    }
+    
+    private func expandPopup(with alternatives: AlternativeCharactersProvider.Alternatives, isUppercase: Bool) {
+        guard let popupView, let baseCharacter, let host = popupHostView else { return }
+        isExpanded = true
+        if isUppercase {
+            currentCharacters = [baseCharacter] + alternatives.uppercase
+        } else {
+            currentCharacters = [baseCharacter] + alternatives.lowercase
+        }
+        popupView.updateCharacters(currentCharacters)
         
-        // The long press gesture already tracks movement via .changed state
-        // No need for separate pan gesture - UILongPressGestureRecognizer handles it
+        let newSize = popupView.preferredSize(maxWidth: host.bounds.width - 20)
+        var frame = popupView.frame
+        frame.size = newSize
+        frame.origin.y = max(4, currentAnchorFrame.minY - newSize.height + 6)
+        frame.origin.x = min(max(8, currentAnchorFrame.midX - newSize.width / 2), host.bounds.width - newSize.width - 8)
+        popupView.frame = frame
+        popupView.updateHighlight(for: CGPoint(x: popupView.bounds.midX, y: popupView.bounds.midY))
     }
     
     private func updatePopupHighlight(for location: CGPoint) {
@@ -105,25 +120,49 @@ final class LongPressHandler: PopupKeyViewDelegate {
         popupView.selectHighlightedCharacter()
     }
     
-    private func removePopup() {
-        if let popupView = popupView {
-            popupView.animateDismissal {
-                popupView.removeFromSuperview()
-            }
-        }
+    private func cleanupPopup() {
+        expansionWorkItem?.cancel()
+        let viewToRemove = popupView
         popupView = nil
+        viewToRemove?.animateDismissal {
+            viewToRemove?.removeFromSuperview()
+        }
         panGesture = nil
+        isExpanded = false
+        lastHighlightedCharacter = nil
     }
     
-    // MARK: - PopupKeyViewDelegate
-    
+    private func hostView(for keyView: UIView) -> UIView? {
+        if let window = keyView.window ?? containerView?.window {
+            if popupHostView == nil {
+                let host = UIView(frame: window.bounds)
+                host.isUserInteractionEnabled = false
+                host.backgroundColor = .clear
+                host.translatesAutoresizingMaskIntoConstraints = false
+                window.addSubview(host)
+                NSLayoutConstraint.activate([
+                    host.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+                    host.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+                    host.topAnchor.constraint(equalTo: window.topAnchor),
+                    host.bottomAnchor.constraint(equalTo: window.bottomAnchor)
+                ])
+                popupHostView = host
+            }
+            return popupHostView
+        }
+        return containerView
+    }
+}
+
+// MARK: - PopupKeyViewDelegate
+
+extension LongPressHandler {
     func popupKeyView(_ view: PopupKeyView, didSelect character: String) {
         onCharacterSelected?(character)
-        removePopup()
+        cleanupPopup()
     }
     
     func popupKeyView(_ view: PopupKeyView, highlightedCharacter: String?) {
-        // Provide haptic feedback when sliding between characters
         if let character = highlightedCharacter, character != lastHighlightedCharacter {
             lastHighlightedCharacter = character
             haptics?.playSelectionChanged()

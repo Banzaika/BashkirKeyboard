@@ -12,6 +12,8 @@ final class KeyView: UIControl {
     private let titleLabel = UILabel()
     private var palette: UIKitThemePalette
     private var hapticGenerator: UIImpactFeedbackGenerator?
+    private var spaceHintWorkItem: DispatchWorkItem?
+    private var isSpaceHintVisible = false
     
     private var baseBackgroundColor: UIColor {
         if key.kind == .returnKey {
@@ -39,6 +41,8 @@ final class KeyView: UIControl {
         setupView()
         updateTitle(isUppercase: isUppercase)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPress.minimumPressDuration = 0.15
+        longPress.cancelsTouchesInView = false
         addGestureRecognizer(longPress)
     }
 
@@ -57,9 +61,8 @@ final class KeyView: UIControl {
     }
 
     func updateTitle(isUppercase: Bool) {
-        // Special handling for space key - show "Башҡортса"
         if key.kind == .space {
-            titleLabel.text = "Башҡортса"
+            titleLabel.text = isSpaceHintVisible ? "Башҡортса" : ""
         } else {
             titleLabel.text = key.displayText(isUppercase: isUppercase)
         }
@@ -69,6 +72,31 @@ final class KeyView: UIControl {
     func updateTheme(_ palette: UIKitThemePalette) {
         self.palette = palette
         applyPalette()
+    }
+    
+    func showSpaceHint(duration: TimeInterval) {
+        guard key.kind == .space else { return }
+        isSpaceHintVisible = true
+        spaceHintWorkItem?.cancel()
+        titleLabel.text = "Башҡортса"
+        titleLabel.alpha = 0
+        
+        UIView.animate(withDuration: 0.2) {
+            self.titleLabel.alpha = 1
+        }
+        
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            UIView.animate(withDuration: 0.25, animations: {
+                self.titleLabel.alpha = 0
+            }, completion: { _ in
+                self.isSpaceHintVisible = false
+                self.updateTitle(isUppercase: false)
+            })
+        }
+        
+        spaceHintWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: workItem)
     }
 
     private func setupView() {
@@ -91,12 +119,12 @@ final class KeyView: UIControl {
         case .emoji:
             fontSize = 24 // Emoji key shows emoji icon
         case .space:
-            fontSize = 14 // Smaller for "Башҡортса" text
+            fontSize = 16 // Slightly larger for temporary label
         default:
             fontSize = 20
         }
         
-        titleLabel.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
+        titleLabel.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
         titleLabel.textAlignment = .center
         titleLabel.textColor = palette.keyForegroundColor
         titleLabel.adjustsFontSizeToFitWidth = true
@@ -163,11 +191,11 @@ final class KeyView: UIControl {
         titleLabel.textColor = palette.keyForegroundColor
         layer.cornerRadius = palette.keyCornerRadius
         
-        // Apply drop shadow for depth - these values make shadows visible
-        layer.shadowColor = UIColor.black.withAlphaComponent(0.25).cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 1.5)
-        layer.shadowRadius = 2.0
-        layer.shadowOpacity = 0.25
+        // Apply drop shadow for depth
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 3.0
+        layer.shadowOpacity = 0.35
         
         // CRITICAL: masksToBounds must be false for shadows to work
         layer.masksToBounds = false
