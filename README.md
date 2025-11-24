@@ -242,3 +242,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 **Note**: This keyboard requires Full Access to sync theme preferences between the main app and the keyboard extension. No data is collected or transmitted outside the device.
 
 
+
+
